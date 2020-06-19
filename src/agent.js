@@ -2,6 +2,11 @@ import superagentPromise from "superagent-promise";
 import _superagent from 'superagent';
 const superagent = superagentPromise(_superagent, global.Promise);
 const API_ROOT = "https://sheltered-meadow-85774.herokuapp.com/api";
+
+//dev
+//const API_ROOT = "https://localhost:8000/api";
+
+
 const responseBody = response => response.body;
 
 let token = null;
