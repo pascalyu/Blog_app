@@ -25,7 +25,12 @@ import {
     USER_REGISTER_SUCCESS,
     USER_CONFIRMATION_SUCCESS,
     USER_REGISTER_COMPLETED,
-    ARTICLE_CREATED_SUCCESS
+    ARTICLE_CREATED_SUCCESS,
+    IMAGE_UPLOADED,
+    IMAGE_UPLOAD_REQUEST,
+    IMAGE_UPLOAD_ERROR,
+    ARTICLE_FORM_UNLOAD,
+    IMAGE_DELETED
 } from "./constants"
 import { SubmissionError } from "redux-form";
 import request from "superagent";
@@ -287,7 +292,9 @@ export const articleCreated = (articleId) => {
     }
 }
 
-export const articleCreate = (values) => {
+export const articleCreate = (values, images) => {
+    values.images = images.map(image => `/api/images/${image.id}`);
+    console.log(values);
     return (dispatch) => {
         return requests.post(`/articles`,
             values)
@@ -301,3 +308,63 @@ export const articleCreate = (values) => {
             });
     };
 };
+
+
+export const imageUploaded = (data) => {
+    return {
+
+        type: IMAGE_UPLOADED,
+        image: data
+    }
+
+}
+
+export const imageUploadRequest = () => {
+    return {
+
+        type: IMAGE_UPLOAD_REQUEST,
+
+    }
+
+}
+
+export const imageUploadError = () => {
+    return {
+
+        type: IMAGE_UPLOAD_ERROR,
+
+    }
+
+}
+export const imageUpload = (file) => {
+
+    return (dispatch) => {
+        dispatch(imageUploadRequest());
+        return requests.upload('/images', file)
+            .then(response => dispatch(imageUploaded(response)))
+            .catch(error => dispatch(imageUploadError(error)));
+
+    }
+}
+
+export const articleFormUnload = () => ({
+    type: ARTICLE_FORM_UNLOAD,
+});
+
+export const imageDelete = (id) => {
+
+    return (dispatch) => {
+
+        return requests.delete(`/images/${id}`).then(response => dispatch(imageDeleted(id)));
+
+
+    }
+}
+
+export const imageDeleted = (id) => {
+    return {
+        type: IMAGE_DELETED,
+        imageId: id
+    }
+}
+

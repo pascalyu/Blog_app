@@ -1,0 +1,26 @@
+.nice-input-upload .form-control-file {
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+    cursor: pointer;
+    position: relative;
+    min-height: 6em;
+}
+
+.nice-input-upload .form-control-file:before {
+    width: 100%;
+    border: 2px dashed lightgray;
+    border-radius: 6px;
+    text-align: center;
+    overflow: hidden;
+    color: #6c757d;
+    font-size: 1em;
+    min-height: 6em;
+    line-height: 2em;
+    padding-top: 2em;
+    content: attr(data-title);
+    visibility: visible;
+    cursor: pointer;
+    position: absolute;
+    min-height: 6em;
+}

@@ -20,6 +20,19 @@ class Article extends React.Component {
                 </p>
 
                 <div className="border-top p-3">  {post.content} </div>
+                <div>
+                    {post.images && post.images.map(image => {
+                        return (
+                            <div className="col-md-6 col-lg-4">
+                                <div className="mt-2 mb-2">
+                                    <img src={`http://localhost:8000/images/articles/${image.url}`} className="img-fluid"></img>
+                                </div>
+
+                            </div>)
+                    })}
+
+
+                </div>
             </div>
 
         )

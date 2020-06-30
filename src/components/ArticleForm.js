@@ -1,19 +1,24 @@
 import React from "react";
-import { Field, reduxForm,reset } from "redux-form";
+import { Field, reduxForm, reset } from "redux-form";
 import { renderField } from "../form"
 import { connect } from "react-redux";
-import { articleCreate } from "../actions/action";
+import {imageDelete, articleCreate, articleFormUnload } from "../actions/action";
 import { canWritePost } from '../apiUtils';
 import { Redirect } from "react-router";
+import ImageUpload from "./ImageUpload";
+import ImageBrowser from "./ImageBrowser";
 
+
+const mapDispatchToProps = {
+    articleCreate,
+    articleFormUnload,
+    imageDelete
+}
 const mapStateToProps = state => ({
-    ...state.article,
+    ...state.articleForm,
     userData: state.auth.userData
 
 })
-const mapDispatchToProps = {
-    articleCreate
-}
 class ArticleForm extends React.Component {
 
 
@@ -22,14 +27,14 @@ class ArticleForm extends React.Component {
 
             this.props.history.push("/");
         }
-    }
+    }*/
     componentWillUnmount() {
 
-        this.setState(({ articleCreated: false }));
-    }*/
+        this.props.articleFormUnload();
+    }
     onSubmit(values) {
-        const { articleCreate } = this.props;
-        return articleCreate(values).then(() => {
+        const { articleCreate, images } = this.props;
+        return articleCreate(values, images).then(() => {
             reset();
             this.props.history.push("/");
         }
@@ -38,8 +43,8 @@ class ArticleForm extends React.Component {
     }
     render() {
 
-        const { handleSubmit, userData } = this.props;
-        console.log(userData);
+        const { submitting, handleSubmit, userData, images, isImageUploading,imageDelete } = this.props;
+
         if (!canWritePost(userData)) {
 
             return <Redirect to="/login"></Redirect>
@@ -52,8 +57,9 @@ class ArticleForm extends React.Component {
                         <Field name="title" label="Title" type="input" component={renderField} />
                         <Field name="content" label="Content" type="textarea" component={renderField} />
                         <Field name="shown" label="show it" type="checkbox" className="form-group" component={renderField} />
-
-                        <button className="form-control btn btn-primary" type="submit"  >Create</button>
+                        <ImageUpload></ImageUpload>
+                        <ImageBrowser images={images} deleteHandler={imageDelete}></ImageBrowser>
+                        <button className="form-control btn btn-primary" type="submit" disabled={submitting || isImageUploading}  >Create</button>
 
                     </form>
                 </div>
