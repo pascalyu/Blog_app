@@ -37,6 +37,7 @@ class LoginForm extends React.Component {
                         {error}
                     </div>
                 }
+                <div className="card-body"> vous pouvez vous connecter avez testtest/testTest9</div>
                 <form className="mt-4" onSubmit={handleSubmit(this.onSubmit.bind(this))} >
                     <Field name="username" label="username" type="input" component={renderField} />
                     <Field name="password" label="password" type="password" component={renderField} />
